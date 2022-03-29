@@ -10,7 +10,6 @@ enum State {
 }
 
 pub struct Lexer {
-    tokens: Vec<Token>,
     state: State,
     lexeme: String,
 }
@@ -38,7 +37,6 @@ fn read_file_line_by_line(filepath: &str) -> Result<Vec<char>, Box<dyn std::erro
 impl Lexer {
     pub fn new() -> Lexer {
         Lexer {
-            tokens: Vec::new(),
             state: State::START,
             lexeme: String::new(),
         }
@@ -51,7 +49,7 @@ impl Lexer {
         }
     }
 
-    fn tokenize_lexeme(&mut self) {
+    fn tokenize_lexeme(&mut self, tokens: &mut Vec<Token>) {
         let keywords = ["load", "add"];
 
         let word = self.lexeme.to_lowercase();
@@ -61,14 +59,15 @@ impl Lexer {
                 Some(token_type) => token_type,
                 None => panic!("Unknown token type: {}", word),
             };
-            self.tokens.push(Token::new(token_type, self.lexeme.clone()));
+            tokens.push(Token::new(token_type, self.lexeme.clone()));
         } else {
-            self.tokens.push(Token::new(TokenType::NUM, self.lexeme.clone()));
+            tokens.push(Token::new(TokenType::NUM, self.lexeme.clone()));
         }
     }
 
-    pub fn tokenize(&mut self, file_path: &str) -> &Vec<Token> {
+    pub fn tokenize(&mut self, file_path: &str) -> Vec<Token> {
         let chars = read_file_line_by_line(file_path).unwrap();
+        let mut tokens = Vec::new();
 
         let mut i = 0;
         while i < chars.len() {
@@ -94,7 +93,7 @@ impl Lexer {
                         self.state = State::SKIP;
                         i += 1;
                     } else {
-                        self.tokenize_lexeme();
+                        self.tokenize_lexeme(&mut tokens);
                         self.lexeme.clear();
                         self.state = State::START;
                     }
@@ -103,10 +102,10 @@ impl Lexer {
         }
 
         if !self.lexeme.is_empty() {
-            self.tokenize_lexeme();
+            self.tokenize_lexeme(&mut tokens);
             self.lexeme.clear();
         }
 
-        &self.tokens
+        tokens
     }
 }
