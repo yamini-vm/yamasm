@@ -42,7 +42,7 @@ impl Token {
     }
 
     pub fn to_bytes(&self) -> u8 {
-        match self.token {
+        let byte_val = match self.token {
             TokenType::LOAD => 0,
             TokenType::ADD => 1,
             TokenType::SUB => 2,
@@ -50,6 +50,9 @@ impl Token {
             TokenType::DIV => 4,
             TokenType::RET => 5,
             TokenType::NUM => self.lexeme.parse::<u8>().unwrap(),
-        }
+        };
+
+        let bin_byte_val = format!("{:08b}", byte_val).parse::<u8>().unwrap();
+        bin_byte_val
     }
 }
