@@ -7,6 +7,7 @@ pub enum TokenType {
     DIV,
     RET,
     NUM,
+    MOD,
 }
 
 impl TokenType {
@@ -18,6 +19,7 @@ impl TokenType {
             "mul" => Some(TokenType::MUL),
             "div" => Some(TokenType::DIV),
             "ret" => Some(TokenType::RET),
+            "mod" => Some(TokenType::MOD),
             _ => None,
         }
     }
@@ -50,6 +52,7 @@ impl Token {
             TokenType::DIV => 4,
             TokenType::RET => 5,
             TokenType::NUM => self.lexeme.parse::<u8>().unwrap(),
+            TokenType::MOD => 6,
         }
     }
 }
