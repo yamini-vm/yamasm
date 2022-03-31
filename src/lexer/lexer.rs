@@ -60,6 +60,10 @@ impl Lexer {
                 None => panic!("Unknown token type: {}", word),
             };
             tokens.push(Token::new(token_type, self.lexeme.clone()));
+        } else if word.starts_with("%") {
+            let label_name: String = self.lexeme.as_str()[1..].to_string();
+            let label_token = Token::new(TokenType::LOADLABEL, label_name.clone());
+            tokens.push(label_token);
         } else {
             tokens.push(Token::new(TokenType::NUM, self.lexeme.clone()));
         }

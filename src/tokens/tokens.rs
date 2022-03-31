@@ -8,6 +8,24 @@ pub enum TokenType {
     RET,
     NUM,
     MOD,
+    LOADLABEL,
+}
+
+impl PartialEq for TokenType {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (TokenType::LOAD, TokenType::LOAD) => true,
+            (TokenType::ADD, TokenType::ADD) => true,
+            (TokenType::SUB, TokenType::SUB) => true,
+            (TokenType::MUL, TokenType::MUL) => true,
+            (TokenType::DIV, TokenType::DIV) => true,
+            (TokenType::RET, TokenType::RET) => true,
+            (TokenType::NUM, TokenType::NUM) => true,
+            (TokenType::MOD, TokenType::MOD) => true,
+            (TokenType::LOADLABEL, TokenType::LOADLABEL) => true,
+            _ => false,
+        }
+    }
 }
 
 impl TokenType {
@@ -43,6 +61,10 @@ impl Token {
         &self.token
     }
 
+    pub fn lexeme(&self) -> String {
+        self.lexeme.clone()
+    }
+
     pub fn to_bytes(&self) -> u8 {
         match self.token {
             TokenType::LOAD => 0,
@@ -53,6 +75,7 @@ impl Token {
             TokenType::RET => 5,
             TokenType::NUM => self.lexeme.parse::<u8>().unwrap(),
             TokenType::MOD => 6,
+            TokenType::LOADLABEL => 7,
         }
     }
 }
