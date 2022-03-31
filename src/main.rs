@@ -23,7 +23,7 @@ fn main() {
 
     let tokens = lexer.tokenize(&file_path);
     
-    let compiler = Compiler::new(tokens);
+    let mut compiler = Compiler::new(tokens);
     
     let instructions = compiler.compile_instructions();
 
