@@ -27,6 +27,10 @@ fn main() {
     
     let instructions = compiler.compile_instructions();
 
+    for instruction in &instructions {
+        println!("{}", instruction);
+    }
+
     if Path::new(bin_path).exists() {
         fs::remove_file(bin_path).unwrap();
       }
