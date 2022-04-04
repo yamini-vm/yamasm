@@ -9,6 +9,7 @@ pub enum TokenType {
     NUM,
     MOD,
     LOADLABEL,
+    JMP,
 }
 
 impl PartialEq for TokenType {
@@ -23,6 +24,7 @@ impl PartialEq for TokenType {
             (TokenType::NUM, TokenType::NUM) => true,
             (TokenType::MOD, TokenType::MOD) => true,
             (TokenType::LOADLABEL, TokenType::LOADLABEL) => true,
+            (TokenType::JMP, TokenType::JMP) => true,
             _ => false,
         }
     }
@@ -38,6 +40,7 @@ impl TokenType {
             "div" => Some(TokenType::DIV),
             "ret" => Some(TokenType::RET),
             "mod" => Some(TokenType::MOD),
+            "jmp" => Some(TokenType::JMP),
             _ => None,
         }
     }
@@ -76,6 +79,7 @@ impl Token {
             TokenType::NUM => self.lexeme.parse::<u8>().unwrap(),
             TokenType::MOD => 6,
             TokenType::LOADLABEL => 7,
+            TokenType::JMP => 8,
         }
     }
 }
