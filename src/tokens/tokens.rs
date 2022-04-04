@@ -11,6 +11,7 @@ pub enum TokenType {
     LOADLABEL,
     JMP,
     LOADREGISTER,
+    POPREGISTER,
 }
 
 impl PartialEq for TokenType {
@@ -27,6 +28,7 @@ impl PartialEq for TokenType {
             (TokenType::LOADLABEL, TokenType::LOADLABEL) => true,
             (TokenType::JMP, TokenType::JMP) => true,
             (TokenType::LOADREGISTER, TokenType::LOADREGISTER) => true,
+            (TokenType::POPREGISTER, TokenType::POPREGISTER) => true,
             _ => false,
         }
     }
@@ -44,6 +46,7 @@ impl TokenType {
             "mod" => Some(TokenType::MOD),
             "jmp" => Some(TokenType::JMP),
             "loadreg" => Some(TokenType::LOADREGISTER),
+            "popreg" => Some(TokenType::POPREGISTER),
             _ => None,
         }
     }
@@ -84,6 +87,7 @@ impl Token {
             TokenType::LOADLABEL => 7,
             TokenType::JMP => 8,
             TokenType::LOADREGISTER => 9,
+            TokenType::POPREGISTER => 10,
         }
     }
 }

@@ -78,6 +78,12 @@ impl Compiler {
                     let next_token = self.get_next_token();
                     instructions.push(Some(next_token.to_bytes()));
                 },
+                TokenType::POPREGISTER => {
+                    instructions.push(Some(current_token.to_bytes()));
+                    self.expect_next_token(TokenType::NUM);
+                    let next_token = self.get_next_token();
+                    instructions.push(Some(next_token.to_bytes()));
+                },
             }
 
             num_instructions += 1;

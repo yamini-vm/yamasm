@@ -34,6 +34,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::LOADREGISTER;
     assert_eq!(token_type, TokenType::LOADREGISTER);
+
+    let token_type = TokenType::POPREGISTER;
+    assert_eq!(token_type, TokenType::POPREGISTER);
 }
 
 #[test]
@@ -64,6 +67,9 @@ fn test_token_from() {
 
     let token_type = TokenType::from("loadreg");
     assert_eq!(token_type, Some(TokenType::LOADREGISTER));
+
+    let token_type = TokenType::from("popreg");
+    assert_eq!(token_type, Some(TokenType::POPREGISTER));
 
     let token_type = TokenType::from("_");
     assert_eq!(token_type, None);
@@ -115,4 +121,7 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::LOADREGISTER, "loadreg".to_string());
     assert_eq!(token.to_bytes(), 9);
+
+    let token = Token::new(TokenType::POPREGISTER, "popreg".to_string());
+    assert_eq!(token.to_bytes(), 10);
 }
