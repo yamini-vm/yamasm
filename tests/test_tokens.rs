@@ -28,6 +28,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::LOADLABEL;
     assert_eq!(token_type, TokenType::LOADLABEL);
+
+    let token_type = TokenType::JMP;
+    assert_eq!(token_type, TokenType::JMP);
 }
 
 #[test]
@@ -52,6 +55,9 @@ fn test_token_from() {
 
     let token_type = TokenType::from("mod");
     assert_eq!(token_type, Some(TokenType::MOD));
+
+    let token_type = TokenType::from("jmp");
+    assert_eq!(token_type, Some(TokenType::JMP));
 
     let token_type = TokenType::from("_");
     assert_eq!(token_type, None);
@@ -97,4 +103,7 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::LOADLABEL, "loadlabel".to_string());
     assert_eq!(token.to_bytes(), 7);
+
+    let token = Token::new(TokenType::JMP, "jmp".to_string());
+    assert_eq!(token.to_bytes(), 8);
 }
