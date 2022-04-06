@@ -84,6 +84,13 @@ impl Compiler {
                     let next_token = self.get_next_token();
                     instructions.push(Some(next_token.to_bytes()));
                 },
+                TokenType::JZ => {
+                    instructions.push(Some(current_token.to_bytes()));
+                    self.expect_next_token(TokenType::LOADLABEL);
+                    let next_token = self.get_next_token();
+                    instructions.push(None);
+                    backpatch_store.insert(instructions.len() - 1, next_token.lexeme());
+                },
             }
 
             num_instructions += 1;
