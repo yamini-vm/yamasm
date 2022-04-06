@@ -58,7 +58,7 @@ impl Compiler {
                 | TokenType::RET => {
                     instructions.push(Some(current_token.to_bytes()));
                 },
-                TokenType::JMP => {
+                TokenType::JMP | TokenType::JZ => {
                     instructions.push(Some(current_token.to_bytes()));
                     self.expect_next_token(TokenType::LOADLABEL);
                     let next_token = self.get_next_token();
@@ -83,13 +83,6 @@ impl Compiler {
                     self.expect_next_token(TokenType::NUM);
                     let next_token = self.get_next_token();
                     instructions.push(Some(next_token.to_bytes()));
-                },
-                TokenType::JZ => {
-                    instructions.push(Some(current_token.to_bytes()));
-                    self.expect_next_token(TokenType::LOADLABEL);
-                    let next_token = self.get_next_token();
-                    instructions.push(None);
-                    backpatch_store.insert(instructions.len() - 1, next_token.lexeme());
                 },
             }
 
