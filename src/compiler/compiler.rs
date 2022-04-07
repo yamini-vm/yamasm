@@ -58,7 +58,7 @@ impl Compiler {
                 | TokenType::RET => {
                     instructions.push(Some(current_token.to_bytes()));
                 },
-                TokenType::JMP | TokenType::JZ => {
+                TokenType::JMP | TokenType::JZ | TokenType::JN => {
                     instructions.push(Some(current_token.to_bytes()));
                     self.expect_next_token(TokenType::LOADLABEL);
                     let next_token = self.get_next_token();
