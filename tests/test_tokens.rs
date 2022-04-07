@@ -40,6 +40,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::JZ;
     assert_eq!(token_type, TokenType::JZ);
+
+    let token_type = TokenType::JN;
+    assert_eq!(token_type, TokenType::JN);
 }
 
 #[test]
@@ -76,6 +79,9 @@ fn test_token_from() {
 
     let token_type = TokenType::from("jz");
     assert_eq!(token_type, Some(TokenType::JZ));
+
+    let token_type = TokenType::from("jn");
+    assert_eq!(token_type, Some(TokenType::JN));
 
     let token_type = TokenType::from("_");
     assert_eq!(token_type, None);
@@ -133,4 +139,7 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::JZ, "jz".to_string());
     assert_eq!(token.to_bytes(), 11);
+
+    let token = Token::new(TokenType::JN, "jn".to_string());
+    assert_eq!(token.to_bytes(), 12);
 }
