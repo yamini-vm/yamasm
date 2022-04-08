@@ -8,12 +8,12 @@ pub enum TokenType {
     RET,
     NUM,
     MOD,
-    LOADLABEL,
+    LABEL,
     JMP,
-    LOADREGISTER,
-    POPREGISTER,
+    POP,
     JZ,
     JN,
+    REG,
 }
 
 impl PartialEq for TokenType {
@@ -27,12 +27,12 @@ impl PartialEq for TokenType {
             (TokenType::RET, TokenType::RET) => true,
             (TokenType::NUM, TokenType::NUM) => true,
             (TokenType::MOD, TokenType::MOD) => true,
-            (TokenType::LOADLABEL, TokenType::LOADLABEL) => true,
+            (TokenType::LABEL, TokenType::LABEL) => true,
             (TokenType::JMP, TokenType::JMP) => true,
-            (TokenType::LOADREGISTER, TokenType::LOADREGISTER) => true,
-            (TokenType::POPREGISTER, TokenType::POPREGISTER) => true,
+            (TokenType::POP, TokenType::POP) => true,
             (TokenType::JZ, TokenType::JZ) => true,
             (TokenType::JN, TokenType::JN) => true,
+            (TokenType::REG, TokenType::REG) => true,
             _ => false,
         }
     }
@@ -49,8 +49,7 @@ impl TokenType {
             "ret" => Some(TokenType::RET),
             "mod" => Some(TokenType::MOD),
             "jmp" => Some(TokenType::JMP),
-            "loadreg" => Some(TokenType::LOADREGISTER),
-            "popreg" => Some(TokenType::POPREGISTER),
+            "pop" => Some(TokenType::POP),
             "jz" => Some(TokenType::JZ),
             "jn" => Some(TokenType::JN),
             _ => None,
@@ -90,12 +89,12 @@ impl Token {
             TokenType::RET => 5,
             TokenType::NUM => self.lexeme.parse::<u8>().unwrap(),
             TokenType::MOD => 6,
-            TokenType::LOADLABEL => 7,
+            TokenType::LABEL => 7,
             TokenType::JMP => 8,
-            TokenType::LOADREGISTER => 9,
-            TokenType::POPREGISTER => 10,
-            TokenType::JZ => 11,
-            TokenType::JN => 12,
+            TokenType::POP => 9,
+            TokenType::JZ => 10,
+            TokenType::JN => 11,
+            TokenType::REG => self.lexeme.parse::<u8>().unwrap(),
         }
     }
 }
