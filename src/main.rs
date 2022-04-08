@@ -27,6 +27,8 @@ fn main() {
     
     let instructions = compiler.compile_instructions();
 
+    println!("{:?}", instructions);
+
     if Path::new(bin_path).exists() {
         fs::remove_file(bin_path).unwrap();
     }
