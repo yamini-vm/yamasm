@@ -51,7 +51,7 @@ impl Lexer {
 
     fn tokenize_lexeme(&mut self, tokens: &mut Vec<Token>) {
         let keywords = ["load", "add", "sub", "mul", "div", "ret", "mod", "jmp",
-                                 "loadreg", "popreg", "jz", "jn"];
+                                 "pop", "jz", "jn"];
 
         let word = self.lexeme.to_lowercase();
 
@@ -63,8 +63,12 @@ impl Lexer {
             tokens.push(Token::new(token_type, self.lexeme.clone()));
         } else if word.starts_with("%") {
             let label_name: String = self.lexeme.as_str()[1..].to_string();
-            let label_token = Token::new(TokenType::LOADLABEL, label_name.clone());
+            let label_token = Token::new(TokenType::LABEL, label_name.clone());
             tokens.push(label_token);
+        } else if word.starts_with("r") {
+            let register_idx = &word[1..];
+            let register_token = Token::new(TokenType::REG, register_idx.to_string());
+            tokens.push(register_token);
         } else {
             tokens.push(Token::new(TokenType::NUM, self.lexeme.clone()));
         }

@@ -24,7 +24,7 @@ fn test_tokenize_lexeme() {
     assert_eq!(tokens[4].token(), &TokenType::ADD);
     assert_eq!(tokens[4].lexeme(), "ADD");
 
-    assert_eq!(tokens[5].token(), &TokenType::LOADLABEL);
+    assert_eq!(tokens[5].token(), &TokenType::LABEL);
     assert_eq!(tokens[5].lexeme(), "SUB");
 
     assert_eq!(tokens[6].token(), &TokenType::LOAD);
@@ -36,7 +36,7 @@ fn test_tokenize_lexeme() {
     assert_eq!(tokens[8].token(), &TokenType::SUB);
     assert_eq!(tokens[8].lexeme(), "SUB");
 
-    assert_eq!(tokens[9].token(), &TokenType::LOADLABEL);
+    assert_eq!(tokens[9].token(), &TokenType::LABEL);
     assert_eq!(tokens[9].lexeme(), "END");
 
     assert_eq!(tokens[10].token(), &TokenType::RET);
