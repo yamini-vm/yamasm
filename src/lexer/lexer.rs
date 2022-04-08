@@ -12,6 +12,8 @@ enum State {
 pub struct Lexer {
     state: State,
     lexeme: String,
+    reading_string: bool,
+    current_str: String,
 }
 
 fn read_file_line_by_line(filepath: &str) -> Result<Vec<char>, Box<dyn std::error::Error>> {
@@ -39,6 +41,8 @@ impl Lexer {
         Lexer {
             state: State::START,
             lexeme: String::new(),
+            reading_string: false,
+            current_str: String::new(),
         }
     }
 
@@ -69,8 +73,35 @@ impl Lexer {
             let register_idx = &word[1..];
             let register_token = Token::new(TokenType::REG, register_idx.to_string());
             tokens.push(register_token);
-        } else {
-            tokens.push(Token::new(TokenType::NUM, self.lexeme.clone()));
+        } else if word.starts_with("\"") {
+            let string_start_token = Token::new(TokenType::STARTSTR, "STARTSTR".to_string());
+            tokens.push(string_start_token);
+
+            self.current_str = self.lexeme[1..].to_string().clone();
+            self.current_str.push_str(" ");
+
+            self.reading_string = true;
+        } else if word.ends_with("\"") {
+            self.current_str.push_str(self.lexeme[..self.lexeme.len() - 1].to_string().clone().as_str());
+
+            let string_token = Token::new(TokenType::STR, self.current_str.clone());
+            tokens.push(string_token);
+
+            let string_end_token = Token::new(TokenType::ENDSTR, "ENDSTR".to_string());
+            tokens.push(string_end_token);
+
+            self.reading_string = false;
+            self.current_str = String::new();
+        }
+        else {
+            if self.reading_string {
+                self.current_str.push_str(self.lexeme.clone().as_str());
+                self.current_str.push_str(" ");
+            } else {
+                let token_type = TokenType::NUM;
+                let token = Token::new(token_type, self.lexeme.clone());
+                tokens.push(token);
+            }
         }
     }
 
