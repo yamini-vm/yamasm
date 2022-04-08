@@ -6,12 +6,14 @@ use crate::tokens::{Token, TokenType};
 enum State {
     START,
     READ,
+    READSTR,
     SKIP,
 }
 
 pub struct Lexer {
     state: State,
     lexeme: String,
+    reading_string: bool,
 }
 
 fn read_file_line_by_line(filepath: &str) -> Result<Vec<char>, Box<dyn std::error::Error>> {
@@ -39,6 +41,7 @@ impl Lexer {
         Lexer {
             state: State::START,
             lexeme: String::new(),
+            reading_string: false,
         }
     }
 
@@ -69,8 +72,25 @@ impl Lexer {
             let register_idx = &word[1..];
             let register_token = Token::new(TokenType::REG, register_idx.to_string());
             tokens.push(register_token);
-        } else {
-            tokens.push(Token::new(TokenType::NUM, self.lexeme.clone()));
+        }
+        else {
+            let token_type;
+            if self.reading_string {
+                token_type = TokenType::STR;
+                let start_string_token = Token::new(TokenType::STARTSTR, "startstr".to_string());
+                tokens.push(start_string_token);
+            } else {
+                token_type = TokenType::NUM;
+            }
+
+            let token = Token::new(token_type, self.lexeme.clone());
+            tokens.push(token);
+
+            if self.reading_string {
+                let end_string_token = Token::new(TokenType::ENDSTR, "endstr".to_string());
+                tokens.push(end_string_token);
+                self.reading_string = false;
+            }
         }
     }
 
@@ -91,12 +111,27 @@ impl Lexer {
                 State::READ => {
                     if self.isspace(chars[i]) {
                         self.state = State::SKIP;
+                    } else if chars[i] == '"' {
+                        self.state = State::READSTR;
+                        i += 1;
                     } else {
                         self.lexeme.push(chars[i]);
                         self.state = State::READ;
                         i += 1;
                     }
                 },
+                State::READSTR => {
+                    let mut j = i;
+
+                    while chars[j] != '"' {
+                        self.lexeme.push(chars[j]);
+                        j += 1;
+                    }
+                    j += 1; // Skip the closing quote
+                    i = j;
+                    self.reading_string = true;
+                    self.state = State::START;
+                }
                 State::SKIP => {
                     if self.isspace(chars[i]) {
                         self.state = State::SKIP;

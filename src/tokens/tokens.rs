@@ -14,6 +14,9 @@ pub enum TokenType {
     JZ,
     JN,
     REG,
+    STARTSTR,
+    ENDSTR,
+    STR,
 }
 
 impl PartialEq for TokenType {
@@ -33,6 +36,9 @@ impl PartialEq for TokenType {
             (TokenType::JZ, TokenType::JZ) => true,
             (TokenType::JN, TokenType::JN) => true,
             (TokenType::REG, TokenType::REG) => true,
+            (TokenType::STARTSTR, TokenType::STARTSTR) => true,
+            (TokenType::ENDSTR, TokenType::ENDSTR) => true,
+            (TokenType::STR, TokenType::STR) => true,
             _ => false,
         }
     }
@@ -79,22 +85,31 @@ impl Token {
         self.lexeme.clone()
     }
 
-    pub fn to_bytes(&self) -> u8 {
+    pub fn to_bytes(&self) -> Vec<Option<u8>> {
         match self.token {
-            TokenType::LOAD => 0,
-            TokenType::ADD => 1,
-            TokenType::SUB => 2,
-            TokenType::MUL => 3,
-            TokenType::DIV => 4,
-            TokenType::RET => 5,
-            TokenType::NUM => self.lexeme.parse::<u8>().unwrap(),
-            TokenType::MOD => 6,
-            TokenType::LABEL => 7,
-            TokenType::JMP => 8,
-            TokenType::POP => 9,
-            TokenType::JZ => 10,
-            TokenType::JN => 11,
-            TokenType::REG => self.lexeme.parse::<u8>().unwrap(),
+            TokenType::LOAD => vec![Some(0)],
+            TokenType::ADD => vec![Some(1)],
+            TokenType::SUB => vec![Some(2)],
+            TokenType::MUL => vec![Some(3)],
+            TokenType::DIV => vec![Some(4)],
+            TokenType::RET => vec![Some(5)],
+            TokenType::NUM => vec![Some(self.lexeme.parse::<u8>().unwrap())],
+            TokenType::MOD => vec![Some(6)],
+            TokenType::LABEL => vec![Some(7)],
+            TokenType::JMP => vec![Some(8)],
+            TokenType::POP => vec![Some(9)],
+            TokenType::JZ => vec![Some(10)],
+            TokenType::JN => vec![Some(11)],
+            TokenType::REG => vec![Some(self.lexeme.parse::<u8>().unwrap())],
+            TokenType::STARTSTR => vec![Some(12)],
+            TokenType::ENDSTR => vec![Some(13)],
+            TokenType::STR => {
+                let mut bytes = Vec::new();
+                for c in self.lexeme.chars() {
+                    bytes.push(Some(c as u8));
+                }
+                bytes
+            },
         }
     }
 }
