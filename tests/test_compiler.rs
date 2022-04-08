@@ -9,17 +9,26 @@ fn test_compile_instructions() {
     let mut compiler = Compiler::new(tokens);
     let instructions = compiler.compile_instructions();
 
-    assert_eq!(instructions.len(), 11);
+    assert_eq!(instructions.len(), 14);
 
-    assert_eq!(instructions[0], 0);
-    assert_eq!(instructions[1], 4);
-    assert_eq!(instructions[2], 0);
-    assert_eq!(instructions[3], 5);
-    assert_eq!(instructions[4], 1);
-    assert_eq!(instructions[5], 7);
-    assert_eq!(instructions[6], 0);
-    assert_eq!(instructions[7], 2);
-    assert_eq!(instructions[8], 2);
-    assert_eq!(instructions[9], 7);
-    assert_eq!(instructions[10], 5);
+    let expected_instructions: Vec<u8> = vec![
+        0,
+        200,
+        4,
+        0,
+        200,
+        5,
+        1,
+        7,
+        0,
+        200,
+        2,
+        2,
+        7,
+        5,
+    ];
+
+    for (i, instruction) in instructions.iter().enumerate() {
+        assert_eq!(instruction, &expected_instructions[i]);
+    }
 }
