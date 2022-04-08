@@ -40,6 +40,15 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::JN;
     assert_eq!(token_type, TokenType::JN);
+
+    let token_type = TokenType::STARTSTR;
+    assert_eq!(token_type, TokenType::STARTSTR);
+
+    let token_type = TokenType::ENDSTR;
+    assert_eq!(token_type, TokenType::ENDSTR);
+
+    let token_type = TokenType::STR;
+    assert_eq!(token_type, TokenType::STR);
 }
 
 #[test]
@@ -96,41 +105,50 @@ fn test_token_lexeme_fn() {
 #[test]
 fn test_token_to_bytes() {
     let token = Token::new(TokenType::LOAD, "load".to_string());
-    assert_eq!(token.to_bytes(), 0);
+    assert_eq!(token.to_bytes(), vec![Some(0)]);
 
     let token = Token::new(TokenType::ADD, "add".to_string());
-    assert_eq!(token.to_bytes(), 1);
+    assert_eq!(token.to_bytes(), vec![Some(1)]);
 
     let token = Token::new(TokenType::SUB, "sub".to_string());
-    assert_eq!(token.to_bytes(), 2);
+    assert_eq!(token.to_bytes(), vec![Some(2)]);
 
     let token = Token::new(TokenType::MUL, "mul".to_string());
-    assert_eq!(token.to_bytes(), 3);
+    assert_eq!(token.to_bytes(), vec![Some(3)]);
 
     let token = Token::new(TokenType::DIV, "div".to_string());
-    assert_eq!(token.to_bytes(), 4);
+    assert_eq!(token.to_bytes(), vec![Some(4)]);
 
     let token = Token::new(TokenType::RET, "ret".to_string());
-    assert_eq!(token.to_bytes(), 5);
+    assert_eq!(token.to_bytes(), vec![Some(5)]);
 
     let token = Token::new(TokenType::NUM, "6".to_string());
-    assert_eq!(token.to_bytes(), 6);
+    assert_eq!(token.to_bytes(), vec![Some(6)]);
 
     let token = Token::new(TokenType::MOD, "mod".to_string());
-    assert_eq!(token.to_bytes(), 6);
+    assert_eq!(token.to_bytes(), vec![Some(6)]);
 
     let token = Token::new(TokenType::LABEL, "loadlabel".to_string());
-    assert_eq!(token.to_bytes(), 7);
+    assert_eq!(token.to_bytes(), vec![Some(7)]);
 
     let token = Token::new(TokenType::JMP, "jmp".to_string());
-    assert_eq!(token.to_bytes(), 8);
+    assert_eq!(token.to_bytes(), vec![Some(8)]);
 
     let token = Token::new(TokenType::POP, "popreg".to_string());
-    assert_eq!(token.to_bytes(), 9);
+    assert_eq!(token.to_bytes(), vec![Some(9)]);
 
     let token = Token::new(TokenType::JZ, "jz".to_string());
-    assert_eq!(token.to_bytes(), 10);
+    assert_eq!(token.to_bytes(), vec![Some(10)]);
 
     let token = Token::new(TokenType::JN, "jn".to_string());
-    assert_eq!(token.to_bytes(), 11);
+    assert_eq!(token.to_bytes(), vec![Some(11)]);
+
+    let token = Token::new(TokenType::STARTSTR, "startstr".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(12)]);
+
+    let token = Token::new(TokenType::ENDSTR, "endstr".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(13)]);
+
+    let token = Token::new(TokenType::STR, "Hello".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(72), Some(101), Some(108), Some(108), Some(111)]);
 }
