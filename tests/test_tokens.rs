@@ -17,8 +17,8 @@ fn test_token_type_equality() {
     let token_type = TokenType::DIV;
     assert_eq!(token_type, TokenType::DIV);
 
-    let token_type = TokenType::RET;
-    assert_eq!(token_type, TokenType::RET);
+    let token_type = TokenType::HALT;
+    assert_eq!(token_type, TokenType::HALT);
 
     let token_type = TokenType::NUM;
     assert_eq!(token_type, TokenType::NUM);
@@ -71,8 +71,8 @@ fn test_token_from() {
     let token_type = TokenType::from("div");
     assert_eq!(token_type, Some(TokenType::DIV));
 
-    let token_type = TokenType::from("ret");
-    assert_eq!(token_type, Some(TokenType::RET));
+    let token_type = TokenType::from("halt");
+    assert_eq!(token_type, Some(TokenType::HALT));
 
     let token_type = TokenType::from("mod");
     assert_eq!(token_type, Some(TokenType::MOD));
@@ -125,7 +125,7 @@ fn test_token_to_bytes() {
     let token = Token::new(TokenType::DIV, "div".to_string());
     assert_eq!(token.to_bytes(), vec![Some(4)]);
 
-    let token = Token::new(TokenType::RET, "ret".to_string());
+    let token = Token::new(TokenType::HALT, "ret".to_string());
     assert_eq!(token.to_bytes(), vec![Some(5)]);
 
     let token = Token::new(TokenType::NUM, "6".to_string());

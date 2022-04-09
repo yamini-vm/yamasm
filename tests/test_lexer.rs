@@ -39,6 +39,6 @@ fn test_tokenize_lexeme() {
     assert_eq!(tokens[9].token(), &TokenType::LABEL);
     assert_eq!(tokens[9].lexeme(), "END");
 
-    assert_eq!(tokens[10].token(), &TokenType::RET);
-    assert_eq!(tokens[10].lexeme(), "RET");
+    assert_eq!(tokens[10].token(), &TokenType::HALT);
+    assert_eq!(tokens[10].lexeme(), "HALT");
 }
