@@ -18,6 +18,8 @@ pub enum TokenType {
     ENDSTR,
     STR,
     SHOW,
+    RET,
+    CALL,
 }
 
 impl PartialEq for TokenType {
@@ -41,6 +43,8 @@ impl PartialEq for TokenType {
             (TokenType::ENDSTR, TokenType::ENDSTR) => true,
             (TokenType::STR, TokenType::STR) => true,
             (TokenType::SHOW, TokenType::SHOW) => true,
+            (TokenType::RET, TokenType::RET) => true,
+            (TokenType::CALL, TokenType::CALL) => true,
             _ => false,
         }
     }
@@ -61,6 +65,8 @@ impl TokenType {
             "jz" => Some(TokenType::JZ),
             "jn" => Some(TokenType::JN),
             "show" => Some(TokenType::SHOW),
+            "ret" => Some(TokenType::RET),
+            "call" => Some(TokenType::CALL),
             _ => None,
         }
     }
@@ -114,6 +120,8 @@ impl Token {
                 bytes
             },
             TokenType::SHOW => vec![Some(14)],
+            TokenType::RET => vec![Some(15)],
+            TokenType::CALL => vec![Some(16)],
         }
     }
 }

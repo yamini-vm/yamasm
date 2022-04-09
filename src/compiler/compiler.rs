@@ -75,10 +75,11 @@ impl Compiler {
                     instructions.append(&mut next_token.to_bytes());
                 },
                 TokenType::ADD | TokenType::SUB | TokenType::MUL | TokenType::DIV | TokenType::MOD
-                | TokenType::HALT | TokenType::ENDSTR | TokenType::STR | TokenType::SHOW => {
+                | TokenType::HALT | TokenType::ENDSTR | TokenType::STR | TokenType::SHOW
+                | TokenType::RET => {
                     instructions.append(&mut current_token.to_bytes());
                 },
-                TokenType::JMP | TokenType::JZ | TokenType::JN => {
+                TokenType::JMP | TokenType::JZ | TokenType::JN | TokenType::CALL => {
                     instructions.append(&mut current_token.to_bytes());
                     self.expect_next_token(vec![TokenType::LABEL]);
                     let next_token = self.get_next_token();
