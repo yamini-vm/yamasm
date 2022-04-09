@@ -5,4 +5,4 @@ ADD
 LOAD 2
 SUB
 %END
-RET
+HALT
