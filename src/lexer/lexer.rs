@@ -54,7 +54,7 @@ impl Lexer {
 
     fn tokenize_lexeme(&mut self, tokens: &mut Vec<Token>) {
         let keywords = ["load", "add", "sub", "mul", "div", "ret", "mod", "jmp",
-                                 "pop", "jz", "jn"];
+                                 "pop", "jz", "jn", "show"];
 
         let word = self.lexeme.to_lowercase();
 
@@ -72,8 +72,7 @@ impl Lexer {
             let register_idx = &word[1..];
             let register_token = Token::new(TokenType::REG, register_idx.to_string());
             tokens.push(register_token);
-        }
-        else {
+        } else {
             let token_type;
             if self.reading_string {
                 token_type = TokenType::STR;

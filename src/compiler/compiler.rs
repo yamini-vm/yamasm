@@ -75,7 +75,7 @@ impl Compiler {
                     instructions.append(&mut next_token.to_bytes());
                 },
                 TokenType::ADD | TokenType::SUB | TokenType::MUL | TokenType::DIV | TokenType::MOD
-                | TokenType::RET | TokenType::ENDSTR | TokenType::STR => {
+                | TokenType::RET | TokenType::ENDSTR | TokenType::STR | TokenType::SHOW => {
                     instructions.append(&mut current_token.to_bytes());
                 },
                 TokenType::JMP | TokenType::JZ | TokenType::JN => {
