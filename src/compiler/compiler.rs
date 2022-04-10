@@ -60,16 +60,17 @@ impl Compiler {
             let current_token = self.get_current_token();
 
             match current_token.token() {
-                TokenType::LOAD => {
+                TokenType::LOAD | TokenType::EQU => {
                     instructions.append(&mut current_token.to_bytes());
                     self.expect_next_token(vec![TokenType::NUM, TokenType::REG, TokenType::STARTSTR]);
                     let next_token = self.get_next_token();
+
                     if next_token.token() == &TokenType::NUM || next_token.token() == &TokenType::STARTSTR {
                         instructions.push(Some(200)); // Offset to stack
                     } else if next_token.token() == &TokenType::REG {
                         instructions.push(Some(100)); // Offset to register
                     } else {
-                        panic!("Expected register or number");
+                        panic!("Expected register, number or string");
                     }
 
                     instructions.append(&mut next_token.to_bytes());
