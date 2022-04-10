@@ -20,6 +20,7 @@ pub enum TokenType {
     SHOW,
     RET,
     CALL,
+    EQU,
 }
 
 impl PartialEq for TokenType {
@@ -45,6 +46,7 @@ impl PartialEq for TokenType {
             (TokenType::SHOW, TokenType::SHOW) => true,
             (TokenType::RET, TokenType::RET) => true,
             (TokenType::CALL, TokenType::CALL) => true,
+            (TokenType::EQU, TokenType::EQU) => true,
             _ => false,
         }
     }
@@ -67,6 +69,7 @@ impl TokenType {
             "show" => Some(TokenType::SHOW),
             "ret" => Some(TokenType::RET),
             "call" => Some(TokenType::CALL),
+            "equ" => Some(TokenType::EQU),
             _ => None,
         }
     }
@@ -122,6 +125,7 @@ impl Token {
             TokenType::SHOW => vec![Some(14)],
             TokenType::RET => vec![Some(15)],
             TokenType::CALL => vec![Some(16)],
+            TokenType::EQU => vec![Some(17)],
         }
     }
 }

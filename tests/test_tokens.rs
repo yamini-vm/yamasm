@@ -58,6 +58,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::CALL;
     assert_eq!(token_type, TokenType::CALL);
+
+    let token_type = TokenType::EQU;
+    assert_eq!(token_type, TokenType::EQU);
 }
 
 #[test]
@@ -103,6 +106,9 @@ fn test_token_from() {
 
     let token_type = TokenType::from("call");
     assert_eq!(token_type, Some(TokenType::CALL));
+
+    let token_type = TokenType::from("equ");
+    assert_eq!(token_type, Some(TokenType::EQU));
 
     let token_type = TokenType::from("_");
     assert_eq!(token_type, None);
@@ -178,4 +184,7 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::CALL, "call".to_string());
     assert_eq!(token.to_bytes(), vec![Some(16)]);
+
+    let token = Token::new(TokenType::EQU, "equ".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(17)]);
 }
