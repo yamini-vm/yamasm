@@ -21,6 +21,7 @@ pub enum TokenType {
     RET,
     CALL,
     EQU,
+    VAR,
 }
 
 impl PartialEq for TokenType {
@@ -47,6 +48,7 @@ impl PartialEq for TokenType {
             (TokenType::RET, TokenType::RET) => true,
             (TokenType::CALL, TokenType::CALL) => true,
             (TokenType::EQU, TokenType::EQU) => true,
+            (TokenType::VAR, TokenType::VAR) => true,
             _ => false,
         }
     }
@@ -126,6 +128,7 @@ impl Token {
             TokenType::RET => vec![Some(15)],
             TokenType::CALL => vec![Some(16)],
             TokenType::EQU => vec![Some(17)],
+            TokenType::VAR => vec![Some(self.lexeme.parse::<u8>().unwrap())],
         }
     }
 }

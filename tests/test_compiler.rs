@@ -13,15 +13,15 @@ fn test_compile_instructions() {
 
     let expected_instructions: Vec<u8> = vec![
         0,
-        200,
+        2,
         4,
         0,
-        200,
+        2,
         5,
         1,
         7,
         0,
-        200,
+        2,
         2,
         2,
         7,

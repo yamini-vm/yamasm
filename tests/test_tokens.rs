@@ -61,6 +61,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::EQU;
     assert_eq!(token_type, TokenType::EQU);
+
+    let token_type = TokenType::VAR;
+    assert_eq!(token_type, TokenType::VAR);
 }
 
 #[test]
@@ -187,4 +190,7 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::EQU, "equ".to_string());
     assert_eq!(token.to_bytes(), vec![Some(17)]);
+
+    let token = Token::new(TokenType::NUM, "0".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(0)]);
 }
