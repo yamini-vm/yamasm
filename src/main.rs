@@ -27,11 +27,6 @@ fn main() {
     
     let instructions = compiler.compile_instructions();
 
-    if instructions[instructions.len() - 1] != 5 {
-        println!("Error: last instruction must be HALT");
-        return;
-    }
-
     if Path::new(bin_path).exists() {
         fs::remove_file(bin_path).unwrap();
     }

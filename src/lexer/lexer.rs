@@ -14,6 +14,7 @@ pub struct Lexer {
     state: State,
     lexeme: String,
     reading_string: bool,
+    unique_id: Vec<String>,
 }
 
 fn read_file_line_by_line(filepath: &str) -> Result<Vec<char>, Box<dyn std::error::Error>> {
@@ -42,6 +43,7 @@ impl Lexer {
             state: State::START,
             lexeme: String::new(),
             reading_string: false,
+            unique_id: Vec::new(),
         }
     }
 
@@ -72,6 +74,18 @@ impl Lexer {
             let register_idx = &word[1..];
             let register_token = Token::new(TokenType::REG, register_idx.to_string());
             tokens.push(register_token);
+        } else if word.starts_with("&") {
+            let id = &word[1..].to_string();
+            if self.unique_id.contains(id) {
+                let var_id = self.unique_id.iter().position(|x| x == id).unwrap();
+                let var_token = Token::new(TokenType::VAR, var_id.to_string());
+                tokens.push(var_token);
+            } else {
+                self.unique_id.push(id.clone());
+                let var_id = self.unique_id.len() - 1;
+                let var_token = Token::new(TokenType::VAR, var_id.to_string());
+                tokens.push(var_token);
+            }
         } else {
             let token_type;
             if self.reading_string {

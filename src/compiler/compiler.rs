@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use crate::tokens::{Token, TokenType};
+use super::constants::{REGISTER_OFFSET, STACK_OFFSET, DATA_MEMORY_OFFSET};
 
 pub struct Compiler {
     tokens: Vec<Token>,
@@ -62,13 +63,16 @@ impl Compiler {
             match current_token.token() {
                 TokenType::LOAD | TokenType::EQU => {
                     instructions.append(&mut current_token.to_bytes());
-                    self.expect_next_token(vec![TokenType::NUM, TokenType::REG, TokenType::STARTSTR]);
+                    self.expect_next_token(vec![TokenType::NUM, TokenType::REG, TokenType::STARTSTR,
+                                                           TokenType::VAR]);
                     let next_token = self.get_next_token();
 
                     if next_token.token() == &TokenType::NUM || next_token.token() == &TokenType::STARTSTR {
-                        instructions.push(Some(200)); // Offset to stack
+                        instructions.push(Some(STACK_OFFSET)); // Offset to stack
                     } else if next_token.token() == &TokenType::REG {
-                        instructions.push(Some(100)); // Offset to register
+                        instructions.push(Some(REGISTER_OFFSET)); // Offset to register
+                    } else if next_token.token() == &TokenType::VAR {
+                        instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
                     } else {
                         panic!("Expected register, number or string");
                     }
@@ -91,16 +95,18 @@ impl Compiler {
                     instructions.append(&mut current_token.to_bytes());
                     label_positions.insert(current_token.lexeme(), num_instructions);
                 }
-                TokenType::NUM | TokenType::REG | TokenType::STARTSTR => {
+                TokenType::NUM | TokenType::REG | TokenType::STARTSTR | TokenType::VAR => {
                     panic!("Unexpected token {:?}", current_token);
                 },
                 TokenType::POP => {
                     instructions.append(&mut current_token.to_bytes());
-                    self.expect_next_token(vec![TokenType::REG]);
+                    self.expect_next_token(vec![TokenType::REG, TokenType::VAR]);
                     let next_token = self.get_next_token();
 
                     if next_token.token() == &TokenType::REG {
-                        instructions.push(Some(100)); // Offset to register
+                        instructions.push(Some(REGISTER_OFFSET)); // Offset to register
+                    } else if next_token.token() == &TokenType::VAR {
+                        instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
                     } else {
                         panic!("Expected register");
                     }
