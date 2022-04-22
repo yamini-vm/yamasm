@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::tokens::{Token, TokenType};
-use super::constants::{REGISTER_OFFSET, STACK_OFFSET, DATA_MEMORY_OFFSET};
+use super::constants::{REGISTER_OFFSET, STACK_OFFSET, STACK_OFFSET_STR, DATA_MEMORY_OFFSET, DATA_MEMORY_OFFSET_STR};
 
 pub struct Compiler {
     tokens: Vec<Token>,
@@ -68,16 +68,25 @@ impl Compiler {
                     let next_token = self.get_next_token();
 
                     if next_token.token() == &TokenType::NUM || next_token.token() == &TokenType::STARTSTR {
-                        instructions.push(Some(STACK_OFFSET)); // Offset to stack
+                        if next_token.token() == &TokenType::STARTSTR {
+                            instructions.push(Some(STACK_OFFSET_STR)); // Offset to stack
+                        } else {
+                            instructions.push(Some(STACK_OFFSET)); // Offset to stack
+                        }
                     } else if next_token.token() == &TokenType::REG {
                         instructions.push(Some(REGISTER_OFFSET)); // Offset to register
                     } else if next_token.token() == &TokenType::VAR {
-                        instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
+                        if next_token.token() == &TokenType::STARTSTR {
+                            instructions.push(Some(DATA_MEMORY_OFFSET_STR)); // Offset to data memory
+                        } else {
+                            instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
+                        }
                     } else {
                         panic!("Expected register, number or string");
                     }
 
                     instructions.append(&mut next_token.to_bytes());
+
                 },
                 TokenType::ADD | TokenType::SUB | TokenType::MUL | TokenType::DIV | TokenType::MOD
                 | TokenType::HALT | TokenType::ENDSTR | TokenType::STR | TokenType::SHOW
@@ -106,12 +115,17 @@ impl Compiler {
                     if next_token.token() == &TokenType::REG {
                         instructions.push(Some(REGISTER_OFFSET)); // Offset to register
                     } else if next_token.token() == &TokenType::VAR {
-                        instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
+                        if next_token.token() == &TokenType::STARTSTR {
+                            instructions.push(Some(DATA_MEMORY_OFFSET_STR)); // Offset to data memory
+                        } else {
+                            instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
+                        }
                     } else {
                         panic!("Expected register");
                     }
 
                     instructions.append(&mut next_token.to_bytes());
+
                 },
             }
 
