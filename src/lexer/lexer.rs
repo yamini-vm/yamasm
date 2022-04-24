@@ -56,7 +56,7 @@ impl Lexer {
 
     fn tokenize_lexeme(&mut self, tokens: &mut Vec<Token>) {
         let keywords = ["load", "add", "sub", "mul", "div", "halt", "mod", "jmp",
-                                 "pop", "jz", "jn", "show", "ret", "call", "equ"];
+                                 "pop", "jz", "jn", "show", "ret", "call", "equ", "neg"];
 
         let word = self.lexeme.to_lowercase();
 
