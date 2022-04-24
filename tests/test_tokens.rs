@@ -64,6 +64,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::VAR;
     assert_eq!(token_type, TokenType::VAR);
+
+    let token_type = TokenType::NEG;
+    assert_eq!(token_type, TokenType::NEG);
 }
 
 #[test]
@@ -112,6 +115,9 @@ fn test_token_from() {
 
     let token_type = TokenType::from("equ");
     assert_eq!(token_type, Some(TokenType::EQU));
+
+    let token_type = TokenType::from("neg");
+    assert_eq!(token_type, Some(TokenType::NEG));
 
     let token_type = TokenType::from("_");
     assert_eq!(token_type, None);
@@ -190,6 +196,9 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::EQU, "equ".to_string());
     assert_eq!(token.to_bytes(), vec![Some(17)]);
+
+    let token = Token::new(TokenType::NEG, "neg".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(18)]);
 
     let token = Token::new(TokenType::NUM, "0".to_string());
     assert_eq!(token.to_bytes(), vec![Some(0)]);
