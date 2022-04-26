@@ -61,7 +61,7 @@ impl Compiler {
             let current_token = self.get_current_token();
 
             match current_token.token() {
-                TokenType::LOAD | TokenType::EQU => {
+                TokenType::LOAD => {
                     instructions.append(&mut current_token.to_bytes());
                     self.expect_next_token(vec![TokenType::NUM, TokenType::REG, TokenType::STARTSTR,
                                                            TokenType::VAR]);
@@ -90,7 +90,7 @@ impl Compiler {
                 },
                 TokenType::ADD | TokenType::SUB | TokenType::MUL | TokenType::DIV | TokenType::MOD
                 | TokenType::HALT | TokenType::ENDSTR | TokenType::STR | TokenType::SHOW
-                | TokenType::RET | TokenType::NEG => {
+                | TokenType::RET | TokenType::NEG | TokenType::EQU => {
                     instructions.append(&mut current_token.to_bytes());
                 },
                 TokenType::JMP | TokenType::JZ | TokenType::JN | TokenType::CALL => {
