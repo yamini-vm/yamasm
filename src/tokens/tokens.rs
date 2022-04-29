@@ -24,6 +24,7 @@ pub enum TokenType {
     VAR,
     NEG,
     ADDR,
+    DEREF,
 }
 
 impl PartialEq for TokenType {
@@ -53,6 +54,7 @@ impl PartialEq for TokenType {
             (TokenType::VAR, TokenType::VAR) => true,
             (TokenType::NEG, TokenType::NEG) => true,
             (TokenType::ADDR, TokenType::ADDR) => true,
+            (TokenType::DEREF, TokenType::DEREF) => true,
             _ => false,
         }
     }
@@ -77,6 +79,7 @@ impl TokenType {
             "call" => Some(TokenType::CALL),
             "equ" => Some(TokenType::EQU),
             "neg" => Some(TokenType::NEG),
+            "deref" => Some(TokenType::DEREF),
             _ => None,
         }
     }
@@ -136,6 +139,7 @@ impl Token {
             TokenType::VAR => vec![Some(self.lexeme.parse::<u8>().unwrap())],
             TokenType::NEG => vec![Some(18)],
             TokenType::ADDR => vec![Some(self.lexeme.parse::<u8>().unwrap())],
+            TokenType::DEREF => vec![Some(19)],
         }
     }
 }
