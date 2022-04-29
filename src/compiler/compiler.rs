@@ -1,7 +1,8 @@
 use std::collections::HashMap;
 
 use crate::tokens::{Token, TokenType};
-use super::constants::{REGISTER_OFFSET, STACK_OFFSET, STACK_OFFSET_STR, DATA_MEMORY_OFFSET, DATA_MEMORY_OFFSET_STR};
+use super::constants::{REGISTER_OFFSET, STACK_OFFSET, STACK_OFFSET_STR, DATA_MEMORY_OFFSET};
+use super::constants::{DATA_MEMORY_OFFSET_STR, ADDR_OFFSET};
 
 pub struct Compiler {
     tokens: Vec<Token>,
@@ -64,7 +65,7 @@ impl Compiler {
                 TokenType::LOAD => {
                     instructions.append(&mut current_token.to_bytes());
                     self.expect_next_token(vec![TokenType::NUM, TokenType::REG, TokenType::STARTSTR,
-                                                           TokenType::VAR]);
+                                                           TokenType::VAR, TokenType::ADDR]);
                     let next_token = self.get_next_token();
 
                     if next_token.token() == &TokenType::NUM || next_token.token() == &TokenType::STARTSTR {
@@ -81,6 +82,8 @@ impl Compiler {
                         } else {
                             instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
                         }
+                    } else if next_token.token() == &TokenType::ADDR {
+                        instructions.push(Some(ADDR_OFFSET));
                     } else {
                         panic!("Expected register, number or string");
                     }
@@ -104,7 +107,8 @@ impl Compiler {
                     instructions.append(&mut current_token.to_bytes());
                     label_positions.insert(current_token.lexeme(), num_instructions);
                 }
-                TokenType::NUM | TokenType::REG | TokenType::STARTSTR | TokenType::VAR => {
+                TokenType::NUM | TokenType::REG | TokenType::STARTSTR | TokenType::VAR
+                | TokenType::ADDR => {
                     panic!("Unexpected token {:?}", current_token);
                 },
                 TokenType::POP => {

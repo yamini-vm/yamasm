@@ -67,6 +67,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::NEG;
     assert_eq!(token_type, TokenType::NEG);
+
+    let token_type = TokenType::ADDR;
+    assert_eq!(token_type, TokenType::ADDR);
 }
 
 #[test]
@@ -202,4 +205,7 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::NUM, "0".to_string());
     assert_eq!(token.to_bytes(), vec![Some(0)]);
+
+    let token = Token::new(TokenType::ADDR, "1".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(1)]);
 }
