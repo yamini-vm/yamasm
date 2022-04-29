@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::tokens::{Token, TokenType};
 use super::constants::{REGISTER_OFFSET, STACK_OFFSET, STACK_OFFSET_STR, DATA_MEMORY_OFFSET};
-use super::constants::{DATA_MEMORY_OFFSET_STR, ADDR_OFFSET};
+use super::constants::{DATA_MEMORY_OFFSET_STR, ADDR_OFFSET, PTR_OFFSET};
 
 pub struct Compiler {
     tokens: Vec<Token>,
@@ -108,12 +108,12 @@ impl Compiler {
                     label_positions.insert(current_token.lexeme(), num_instructions);
                 }
                 TokenType::NUM | TokenType::REG | TokenType::STARTSTR | TokenType::VAR
-                | TokenType::ADDR => {
+                | TokenType::ADDR | TokenType::PTR => {
                     panic!("Unexpected token {:?}", current_token);
                 },
                 TokenType::POP => {
                     instructions.append(&mut current_token.to_bytes());
-                    self.expect_next_token(vec![TokenType::REG, TokenType::VAR]);
+                    self.expect_next_token(vec![TokenType::REG, TokenType::VAR, TokenType::PTR]);
                     let next_token = self.get_next_token();
 
                     if next_token.token() == &TokenType::REG {
@@ -124,6 +124,8 @@ impl Compiler {
                         } else {
                             instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
                         }
+                    } else if next_token.token() == &TokenType::PTR {
+                        instructions.push(Some(PTR_OFFSET));
                     } else {
                         panic!("Expected register");
                     }

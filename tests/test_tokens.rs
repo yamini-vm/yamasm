@@ -73,6 +73,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::DEREF;
     assert_eq!(token_type, TokenType::DEREF);
+
+    let token_type = TokenType::PTR;
+    assert_eq!(token_type, TokenType::PTR);
 }
 
 #[test]
@@ -214,4 +217,7 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::DEREF, "deref".to_string());
     assert_eq!(token.to_bytes(), vec![Some(19)]);
+
+    let token = Token::new(TokenType::PTR, "1".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(1)]);
 }
