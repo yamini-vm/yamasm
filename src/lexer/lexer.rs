@@ -86,6 +86,18 @@ impl Lexer {
                 let var_token = Token::new(TokenType::VAR, var_id.to_string());
                 tokens.push(var_token);
             }
+        } else if word.starts_with("$") {
+            let id = &word[1..].to_string();
+            if self.unique_id.contains(id) {
+                let var_id = self.unique_id.iter().position(|x| x == id).unwrap();
+                let addr_token = Token::new(TokenType::ADDR, var_id.to_string());
+                tokens.push(addr_token);
+            } else {
+                self.unique_id.push(id.clone());
+                let var_id = self.unique_id.len() - 1;
+                let addr_token = Token::new(TokenType::VAR, var_id.to_string());
+                tokens.push(addr_token);
+            }
         } else {
             let token_type;
             if self.reading_string {
