@@ -70,6 +70,9 @@ fn test_token_type_equality() {
 
     let token_type = TokenType::ADDR;
     assert_eq!(token_type, TokenType::ADDR);
+
+    let token_type = TokenType::DEREF;
+    assert_eq!(token_type, TokenType::DEREF);
 }
 
 #[test]
@@ -208,4 +211,7 @@ fn test_token_to_bytes() {
 
     let token = Token::new(TokenType::ADDR, "1".to_string());
     assert_eq!(token.to_bytes(), vec![Some(1)]);
+
+    let token = Token::new(TokenType::DEREF, "deref".to_string());
+    assert_eq!(token.to_bytes(), vec![Some(19)]);
 }
