@@ -15,3 +15,7 @@ user@programmer~:$ cargo run
 ```bash
 user@programmer~:$ cargo test
 ```
+
+## License
+
+This project is licensed under the <a href="https://github.com/yamini-vm/yamasm/blob/master/LICENSE">MIT license</a>.
