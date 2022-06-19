@@ -24,7 +24,6 @@ fn main() {
 
     let file_path = args.get("file_path").unwrap().get_str();
     let bin_path = &args.get("output").unwrap().get_str();
-
     let token_flag = args.get("tokens").unwrap().get_bool();
     let instructions_flag = args.get("instructions").unwrap().get_bool();
 
