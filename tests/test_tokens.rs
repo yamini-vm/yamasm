@@ -165,7 +165,7 @@ fn test_token_to_bytes() {
     assert_eq!(token.to_bytes(), vec![Some(5)]);
 
     let token = Token::new(TokenType::NUM, "6".to_string());
-    assert_eq!(token.to_bytes(), vec![Some(6)]);
+    assert_eq!(token.to_bytes(), vec![Some(12), Some(54), Some(13)]);
 
     let token = Token::new(TokenType::MOD, "mod".to_string());
     assert_eq!(token.to_bytes(), vec![Some(6)]);
@@ -210,7 +210,7 @@ fn test_token_to_bytes() {
     assert_eq!(token.to_bytes(), vec![Some(18)]);
 
     let token = Token::new(TokenType::NUM, "0".to_string());
-    assert_eq!(token.to_bytes(), vec![Some(0)]);
+    assert_eq!(token.to_bytes(), vec![Some(12), Some(48), Some(13)]);
 
     let token = Token::new(TokenType::ADDR, "1".to_string());
     assert_eq!(token.to_bytes(), vec![Some(1)]);
