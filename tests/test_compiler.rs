@@ -9,20 +9,26 @@ fn test_compile_instructions() {
     let mut compiler = Compiler::new(tokens);
     let instructions = compiler.compile_instructions();
 
-    assert_eq!(instructions.len(), 14);
+    assert_eq!(instructions.len(), 20);
 
     let expected_instructions: Vec<u8> = vec![
         0,
         2,
-        4,
+        12,
+        52,
+        13,
         0,
         2,
-        5,
+        12,
+        53,
+        13,
         1,
         7,
         0,
         2,
-        2,
+        12,
+        50,
+        13,
         2,
         7,
         5,
