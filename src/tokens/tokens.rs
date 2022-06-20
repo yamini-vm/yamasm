@@ -117,7 +117,18 @@ impl Token {
             TokenType::MUL => vec![Some(3)],
             TokenType::DIV => vec![Some(4)],
             TokenType::HALT => vec![Some(5)],
-            TokenType::NUM => vec![Some(self.lexeme.parse::<u8>().unwrap())],
+            TokenType::NUM => {
+                let mut bytes = Vec::new();
+
+                bytes.push(Some(12)); // STARTSTR marker
+
+                for c in self.lexeme.chars() {
+                    bytes.push(Some(c as u8));
+                }
+
+                bytes.push(Some(13)); // ENDSTR marker
+                bytes
+            },
             TokenType::MOD => vec![Some(6)],
             TokenType::LABEL => vec![Some(7)],
             TokenType::JMP => vec![Some(8)],
