@@ -192,7 +192,7 @@ fn test_token_to_bytes() {
     assert_eq!(token.to_bytes(), vec![Some(13)]);
 
     let token = Token::new(TokenType::STR, "Hello".to_string());
-    assert_eq!(token.to_bytes(), vec![Some(72), Some(101), Some(108), Some(108), Some(111)]);
+    assert_eq!(token.to_bytes(), vec![Some(12), Some(72), Some(101), Some(108), Some(108), Some(111), Some(13)]);
 
     let token = Token::new(TokenType::SHOW, "show".to_string());
     assert_eq!(token.to_bytes(), vec![Some(14)]);

@@ -129,9 +129,14 @@ impl Token {
             TokenType::ENDSTR => vec![Some(13)],
             TokenType::STR => {
                 let mut bytes = Vec::new();
+
+                bytes.push(Some(12)); // STARTSTR marker
+
                 for c in self.lexeme.chars() {
                     bytes.push(Some(c as u8));
                 }
+
+                bytes.push(Some(13)); // ENDSTR marker
                 bytes
             },
             TokenType::SHOW => vec![Some(14)],

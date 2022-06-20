@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::tokens::{Token, TokenType};
 use super::constants::{REGISTER_OFFSET, STACK_OFFSET, STACK_OFFSET_STR, DATA_MEMORY_OFFSET};
-use super::constants::{DATA_MEMORY_OFFSET_STR, ADDR_OFFSET, PTR_OFFSET};
+use super::constants::{ADDR_OFFSET, PTR_OFFSET};
 
 pub struct Compiler {
     tokens: Vec<Token>,
@@ -64,35 +64,35 @@ impl Compiler {
             match current_token.token() {
                 TokenType::LOAD => {
                     instructions.append(&mut current_token.to_bytes());
-                    self.expect_next_token(vec![TokenType::NUM, TokenType::REG, TokenType::STARTSTR,
+                    self.expect_next_token(vec![TokenType::NUM, TokenType::REG, TokenType::STR,
                                                            TokenType::VAR, TokenType::ADDR]);
                     let next_token = self.get_next_token();
 
-                    if next_token.token() == &TokenType::NUM || next_token.token() == &TokenType::STARTSTR {
-                        if next_token.token() == &TokenType::STARTSTR {
-                            instructions.push(Some(STACK_OFFSET_STR)); // Offset to stack
-                        } else {
-                            instructions.push(Some(STACK_OFFSET)); // Offset to stack
+                    match next_token.token() {
+                        TokenType::NUM => {
+                            instructions.push(Some(STACK_OFFSET));
+                        },
+                        TokenType::STR => {
+                            instructions.push(Some(STACK_OFFSET_STR));
+                        },
+                        TokenType::REG => {
+                            instructions.push(Some(REGISTER_OFFSET));
+                        },
+                        TokenType::VAR => {
+                            instructions.push(Some(DATA_MEMORY_OFFSET));
+                        },
+                        TokenType::ADDR => {
+                            instructions.push(Some(ADDR_OFFSET));
+                        },
+                        _ => {
+                            panic!("Expected register, number or string");
                         }
-                    } else if next_token.token() == &TokenType::REG {
-                        instructions.push(Some(REGISTER_OFFSET)); // Offset to register
-                    } else if next_token.token() == &TokenType::VAR {
-                        if next_token.token() == &TokenType::STARTSTR {
-                            instructions.push(Some(DATA_MEMORY_OFFSET_STR)); // Offset to data memory
-                        } else {
-                            instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
-                        }
-                    } else if next_token.token() == &TokenType::ADDR {
-                        instructions.push(Some(ADDR_OFFSET));
-                    } else {
-                        panic!("Expected register, number or string");
                     }
-
+                    
                     instructions.append(&mut next_token.to_bytes());
-
                 },
                 TokenType::ADD | TokenType::SUB | TokenType::MUL | TokenType::DIV | TokenType::MOD
-                | TokenType::HALT | TokenType::ENDSTR | TokenType::STR | TokenType::SHOW
+                | TokenType::HALT | TokenType::STR | TokenType::SHOW
                 | TokenType::RET | TokenType::NEG | TokenType::EQU | TokenType::DEREF => {
                     instructions.append(&mut current_token.to_bytes());
                 },
@@ -107,7 +107,7 @@ impl Compiler {
                     instructions.append(&mut current_token.to_bytes());
                     label_positions.insert(current_token.lexeme(), num_instructions);
                 }
-                TokenType::NUM | TokenType::REG | TokenType::STARTSTR | TokenType::VAR
+                TokenType::NUM | TokenType::REG | TokenType::STARTSTR | TokenType::ENDSTR | TokenType::VAR
                 | TokenType::ADDR | TokenType::PTR => {
                     panic!("Unexpected token {:?}", current_token);
                 },
@@ -116,18 +116,19 @@ impl Compiler {
                     self.expect_next_token(vec![TokenType::REG, TokenType::VAR, TokenType::PTR]);
                     let next_token = self.get_next_token();
 
-                    if next_token.token() == &TokenType::REG {
-                        instructions.push(Some(REGISTER_OFFSET)); // Offset to register
-                    } else if next_token.token() == &TokenType::VAR {
-                        if next_token.token() == &TokenType::STARTSTR {
-                            instructions.push(Some(DATA_MEMORY_OFFSET_STR)); // Offset to data memory
-                        } else {
-                            instructions.push(Some(DATA_MEMORY_OFFSET)); // Offset to data memory
+                    match next_token.token() {
+                        TokenType::REG => {
+                            instructions.push(Some(REGISTER_OFFSET));
+                        },
+                        TokenType::VAR => {
+                            instructions.push(Some(DATA_MEMORY_OFFSET));
+                        },
+                        TokenType::PTR => {
+                            instructions.push(Some(PTR_OFFSET));
+                        },
+                        _ => {
+                            panic!("Expected register, variable or pointer");
                         }
-                    } else if next_token.token() == &TokenType::PTR {
-                        instructions.push(Some(PTR_OFFSET));
-                    } else {
-                        panic!("Expected register");
                     }
 
                     instructions.append(&mut next_token.to_bytes());

@@ -115,8 +115,8 @@ impl Lexer {
             let token_type;
             if self.reading_string {
                 token_type = TokenType::STR;
-                let start_string_token = Token::new(TokenType::STARTSTR, "startstr".to_string());
-                tokens.push(start_string_token);
+                // let start_string_token = Token::new(TokenType::STARTSTR, "startstr".to_string());
+                // tokens.push(start_string_token);
             } else {
                 token_type = TokenType::NUM;
             }
@@ -125,8 +125,8 @@ impl Lexer {
             tokens.push(token);
 
             if self.reading_string {
-                let end_string_token = Token::new(TokenType::ENDSTR, "endstr".to_string());
-                tokens.push(end_string_token);
+                // let end_string_token = Token::new(TokenType::ENDSTR, "endstr".to_string());
+                // tokens.push(end_string_token);
                 self.reading_string = false;
             }
         }
